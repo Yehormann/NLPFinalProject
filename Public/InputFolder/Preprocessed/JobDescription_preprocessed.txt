@@ -1,0 +1,8 @@
+Job Title: Data Scientist  
+Responsibilities:  
+- Develop machine learning models  
+- Analyze large datasets  
+ 
+Required Skills:  
+- Proficiency in Python and R  
+- Experience in data visualization tools  

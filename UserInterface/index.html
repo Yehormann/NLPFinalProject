@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Letter Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+
+
+</head>
+<body>
+    <div class="container">
+        <h1>Cover Letter Assistant with Skill Matching</h1>
+    
+        <!-- Success Message -->
+        {% if success %}
+        <div class="success-message">
+            Files successfully uploaded!
+        </div>
+        {% endif %}
+    
+        <div class="upload-area">
+            <!-- CV Upload -->
+            <div class="upload-box {{ 'missing' if missing_files.get('cv_file') else '' }}" id="cv-upload-box" 
+                 ondrop="handleDrop(event, 'cv_file')" ondragover="allowDrag(event)">
+                <form action="/" method="post" enctype="multipart/form-data">
+                    <label for="cv_file" id="cv-label">
+                        {% if cv_file %}
+                            File "{{ cv_file.split('/')[-1] }}" is added but not saved.
+                        {% else %}
+                            Drag or insert the CV file (PDF)
+                        {% endif %}
+                    </label>
+                    <input type="file" name="cv_file" id="cv_file" onchange="this.form.submit()">
+                </form>
+            </div>
+    
+            <!-- Letter Upload -->
+            <div class="upload-box {{ 'missing' if missing_files.get('letter_file') else '' }}" id="letter-upload-box" 
+                 ondrop="handleDrop(event, 'letter_file')" ondragover="allowDrag(event)">
+                <form action="/" method="post" enctype="multipart/form-data">
+                    <label for="letter_file" id="letter-label">
+                        {% if letter_file %}
+                            File "{{ letter_file.split('/')[-1] }}" is added but not saved.
+                        {% else %}
+                            Drag or insert Cover Letter description (PDF)
+                        {% endif %}
+                    </label>
+                    <input type="file" name="letter_file" id="letter_file" onchange="this.form.submit()">
+                </form>
+            </div>
+    
+            <!-- Job Description Upload -->
+            <div class="upload-box {{ 'missing' if missing_files.get('job_file') else '' }}" id="job-upload-box" 
+                 ondrop="handleDrop(event, 'job_file')" ondragover="allowDrag(event)">
+                <form action="/" method="post" enctype="multipart/form-data">
+                    <label for="job_file" id="job-label">
+                        {% if job_file %}
+                            File "{{ job_file.split('/')[-1] }}" is added but not saved.
+                        {% else %}
+                            Drag or insert Job description (PDF)
+                        {% endif %}
+                    </label>
+                    <input type="file" name="job_file" id="job_file" onchange="this.form.submit()">
+                </form>
+            </div>
+        </div>
+    
+        <form method="post" action="/">
+            <input type="hidden" name="action" value="submit">
+            <button class="submit-button">Create cover letter</button>
+        </form>
+    </div>
+
+
+    
+    <script>
+        function allowDrag(event) {
+            event.preventDefault();
+        }
+
+        function handleDrop(event, inputId) {
+            event.preventDefault();
+            const fileInput = document.getElementById(inputId);
+            const files = event.dataTransfer.files;
+
+            if (!files[0].name.endsWith(".pdf")) {
+                alert("Only PDF files are allowed.");
+                return;
+            }
+
+            fileInput.files = files;
+            fileInput.form.submit();
+        }
+    </script>
+</body>
+</html>
